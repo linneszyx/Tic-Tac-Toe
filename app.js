@@ -3,9 +3,11 @@ const infoDisplay = document.querySelector("#info");
 const startCells = ["", "", "", "", "", "", "", "", ""];
 let go = "circle";
 infoDisplay.textContent = "Circle goes first";
-
+infoDisplay.style.fontSize = "2rem";
+infoDisplay.style.fontWeight = "bold";
+infoDisplay.style.color = "#ffb703";
 function createBoard() {
-  startCells.forEach((_cell, index) => {
+  startCells.forEach((cell, index) => {
     const cellElement = document.createElement("div");
     cellElement.classList.add("square");
     cellElement.id = index;
@@ -19,7 +21,7 @@ function addGo(e) {
   goDisplay.classList.add(go);
   e.target.append(goDisplay);
   go = go === "circle" ? "cross" : "circle";
-  infoDisplay.textContent = `${go} goes next`;
+  infoDisplay.textContent = "It is now " + go + "'s turn";
   e.target.removeEventListener("click", addGo);
   checkScore();
 }
@@ -35,27 +37,26 @@ function checkScore() {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  winningCombos.forEach((array) => {
-    const circleWins = array.every((cell) =>
+  winningCombos.forEach((cell) => {
+    const circleWins = cell.every((cell) =>
       allSquares[cell].firstChild?.classList.contains("circle")
     );
     if (circleWins) {
       infoDisplay.textContent = "Circle wins!";
       allSquares.forEach((square) =>
         square.replaceWith(square.cloneNode(true))
-      )
+      );
     }
   });
-  winningCombos.forEach((array) => {
-    const crossWins = array.every((cell) =>
+  winningCombos.forEach((cell) => {
+    const crossWins = cell.every((cell) =>
       allSquares[cell].firstChild?.classList.contains("cross")
     );
-    if (circleWins) {
+    if (crossWins) {
       infoDisplay.textContent = "Cross wins!";
       allSquares.forEach((square) =>
         square.replaceWith(square.cloneNode(true))
       );
     }
   });
-  
 }
